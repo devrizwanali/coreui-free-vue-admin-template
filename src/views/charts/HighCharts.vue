@@ -45,14 +45,10 @@
           <ActivityGuage />
         </CCardBody>        
       </CCard>
-     <!-- <CCard>
-        <CCardHeader>Simple pointed chart</CCardHeader>
-        <CCardBody><CChartLineSimple pointed border-color="warning"/></CCardBody>
+     <CCard>
+        <CCardHeader>Map chart</CCardHeader>
+        <CCardBody><MapChart /></CCardBody>
       </CCard>
-      <CCard>
-        <CCardHeader>Simple bar chart</CCardHeader>
-        <CCardBody><CChartBarSimple background-color="danger"/></CCardBody>        
-      </CCard> -->
     </CCardGroup>
   </div>
 </template>
