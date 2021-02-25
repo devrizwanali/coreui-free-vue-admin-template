@@ -98,12 +98,13 @@
             color="info"
             shape='pill'
             class="m-2"
+            @click="$router.push({name: 'JsCharting'})"
           > JsCharting </CButton>
           <CButton
             color="primary"
             shape='pill'
             class="m-2"
-
+            @click="$router.push({name: 'AmCharts'})"
           > AmCharts </CButton>
         </CRow>
       </CCardBody>

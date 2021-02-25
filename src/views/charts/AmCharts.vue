@@ -1,0 +1,56 @@
+<template>
+  <div>
+    <CCardGroup columns class="card-columns cols-2">
+      <CCard>
+        <CCardHeader>
+          Line Chart
+          <div class="card-header-actions">
+            <a 
+              href="https://coreui.io/vue/docs/components/charts" 
+              class="card-header-action" 
+              rel="noreferrer noopener" 
+              target="_blank"
+            >
+              <small class="text-muted">docs</small>
+            </a>
+          </div>
+        </CCardHeader>
+        <CCardBody>
+          <LineChart />
+        </CCardBody>
+      </CCard>
+       <CCard>
+        <CCardHeader>Bar Chart</CCardHeader>
+        <CCardBody><BarChart/></CCardBody>
+      </CCard>
+      <CCard>
+         <CCardHeader>Pie Chart</CCardHeader>
+        <CCardBody><PieChart/></CCardBody>
+      </CCard>
+      <CCard>
+        <CCardHeader>Area Chart</CCardHeader>
+        <CCardBody><AreaChart/></CCardBody>
+      </CCard>
+      <CCard>
+        <CCardHeader>Activity Guage</CCardHeader>
+        <CCardBody>
+          <ActivityGuage />
+        </CCardBody>        
+      </CCard>
+     <CCard>
+        <CCardHeader>Map chart</CCardHeader>
+        <CCardBody><MapChart /></CCardBody>
+      </CCard>
+    </CCardGroup>
+  </div>
+</template>
+
+<script>
+import * as AmCharts from './AmCharts/index'
+export default {
+  name: 'AmCharts',
+  components: {
+    ...AmCharts
+  }
+}
+</script>

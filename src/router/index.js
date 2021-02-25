@@ -12,6 +12,9 @@ const Typography = () => import('@/views/theme/Typography')
 
 const Charts = () => import('@/views/charts/Charts')
 const HighCharts = () => import('@/views/charts/HighCharts')
+const JsCharting = () => import('@/views/charts/JsCharting')
+const AmCharts = () => import('@/views/charts/AmCharts')
+
 const Widgets = () => import('@/views/widgets/Widgets')
 
 // Views - Components
@@ -109,6 +112,16 @@ function configRoutes () {
           path: 'high-charts',
           name: 'HighCharts',
           component: HighCharts
+        },
+        {
+          path: 'js-charting',
+          name: 'JsCharting',
+          component: JsCharting
+        },
+        {
+          path: 'am-charts',
+          name: 'AmCharts',
+          component: AmCharts
         },
         {
           path: 'widgets',
