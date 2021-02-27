@@ -1,85 +1,69 @@
 <template>
-  <div>
-    <BarChart :options="chartOptions" />
-  </div>
+  <BarChart :options="options" class="BarChart"></BarChart>
 </template>
 
 <script>
-import { Chart } from "highcharts-vue";
+import BarChart from "jscharting-vue";
+
 export default {
-  components: {
-    BarChart: Chart
-  },
   data() {
     return {
-      chartOptions: {
-        chart: {
-          type: "bar"
-        },
-        title: {
-          text: "Historic World Population by Region"
-        },
-        subtitle: {
-          text:
-            'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
-        },
-        xAxis: {
-          categories: ["Africa", "America", "Asia", "Europe", "Oceania"],
-          title: {
-            text: null
-          }
-        },
-        yAxis: {
-          min: 0,
-          title: {
-            text: "Population (millions)",
-            align: "high"
-          },
-          labels: {
-            overflow: "justify"
-          }
-        },
-        tooltip: {
-          valueSuffix: " millions"
-        },
-        plotOptions: {
-          bar: {
-            dataLabels: {
-              enabled: true
-            }
-          }
-        },
-        legend: {
-          layout: "vertical",
-          align: "right",
-          verticalAlign: "top",
-          x: -40,
-          y: 80,
-          floating: true,
-          borderWidth: 1,
-          backgroundColor:
-            (Chart.theme && Chart.theme.legendBackgroundColor) || "#FFFFFF",
-          shadow: true
-        },
-        credits: {
-          enabled: false
-        },
+      name: "BarChart",
+      options: {
+        type: "horizontalColumn",
+        title_label_text: "Acme Tool Sales",
+        yAxis: { label_text: "Units Sold" },
+        xAxis_label_text: "Quarter",
         series: [
           {
-            name: "Year 1800",
-            data: [107, 31, 635, 203, 2]
+            name: "Saw",
+            id: "s1",
+            points: [
+              { x: "Q1", y: 230 },
+              { x: "Q2", y: 240 },
+              { x: "Q3", y: 267 },
+              { x: "Q4", y: 238 }
+            ]
           },
           {
-            name: "Year 1900",
-            data: [133, 156, 947, 408, 6]
+            name: "Hammer",
+            points: [
+              { x: "Q1", y: 325 },
+              { x: "Q2", y: 367 },
+              { x: "Q3", y: 382 },
+              { x: "Q4", y: 371 }
+            ]
           },
           {
-            name: "Year 2012",
-            data: [1052, 954, 4250, 740, 38]
+            name: "Grinder",
+            points: [
+              { x: "Q1", y: 285 },
+              { x: "Q2", y: 292 },
+              { x: "Q3", y: 267 },
+              { x: "Q4", y: 218 }
+            ]
+          },
+          {
+            name: "Drill",
+            points: [
+              { x: "Q1", y: 185 },
+              { x: "Q2", y: 192 },
+              { x: "Q3", y: 198 },
+              { x: "Q4", y: 248 }
+            ]
           }
         ]
       }
     };
+  },
+  components: {
+    BarChart
   }
 };
 </script>
+
+<style>
+.BarChart {
+  height: 300px;
+}
+</style>

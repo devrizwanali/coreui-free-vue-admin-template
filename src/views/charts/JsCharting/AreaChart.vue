@@ -1,209 +1,78 @@
 <template>
   <div>
-    <BarChart :options="chartOptions" />
+    <AreaChart :options="chartOptions" />
   </div>
 </template>
 
 <script>
-import { Chart } from "highcharts-vue";
+import AreaChart from "jscharting-vue";
+
 export default {
   components: {
-    BarChart: Chart
+    AreaChart
   },
   data() {
     return {
       chartOptions: {
-        chart: {
-          type: "area"
-        },
-        title: {
-          text: "US and USSR nuclear stockpiles"
-        },
-        subtitle: {
-          text:
-            'Source: <a href="http://thebulletin.metapress.com/content/c4120650912x74k7/fulltext.pdf">' +
-            "thebulletin.metapress.com</a>"
-        },
-        xAxis: {
-          allowDecimals: false,
-          labels: {
-            formatter: function() {
-              return this.value; // clean, unformatted number for year
-            }
-          }
+        palette: "fiveColor31",
+        legend_position: "inside top left",
+        defaultSeries: {
+          type: "area",
+          shape_opacity: 0.6,
+          defaultPoint_tooltip: "%icon {%percentOfGroup:n1}% <b>%yValue</b>"
         },
         yAxis: {
-          title: {
-            text: "Nuclear weapon states"
-          },
-          labels: {
-            formatter: function() {
-              return this.value / 1000 + "k";
-            }
-          }
+          scale_type: "stacked",
+          formatString: "c"
         },
-        tooltip: {
-          pointFormat:
-            "{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}"
+        xAxis: {
+          crosshair_enabled: true,
+          scale: { type: "time" }
         },
-        plotOptions: {
-          area: {
-            pointStart: 1940,
-            marker: {
-              enabled: false,
-              symbol: "circle",
-              radius: 2,
-              states: {
-                hover: {
-                  enabled: true
-                }
-              }
-            }
-          }
-        },
+        title_label_text: "Costs (Last 6 Months)",
         series: [
           {
-            name: "USA",
-            data: [
-              null,
-              null,
-              null,
-              null,
-              null,
-              6,
-              11,
-              32,
-              110,
-              235,
-              369,
-              640,
-              1005,
-              1436,
-              2063,
-              3057,
-              4618,
-              6444,
-              9822,
-              15468,
-              20434,
-              24126,
-              27387,
-              29459,
-              31056,
-              31982,
-              32040,
-              31233,
-              29224,
-              27342,
-              26662,
-              26956,
-              27912,
-              28999,
-              28965,
-              27826,
-              25579,
-              25722,
-              24826,
-              24605,
-              24304,
-              23464,
-              23708,
-              24099,
-              24357,
-              24237,
-              24401,
-              24344,
-              23586,
-              22380,
-              21004,
-              17287,
-              14747,
-              13076,
-              12555,
-              12144,
-              11009,
-              10950,
-              10871,
-              10824,
-              10577,
-              10527,
-              10475,
-              10421,
-              10358,
-              10295,
-              10104
+            name: "Purchases",
+            points: [
+              ["1/1/2020", 29.9],
+              ["2/1/2020", 97.5],
+              ["3/1/2020", 110.4],
+              ["4/1/2020", 129.2],
+              ["5/1/2020", 144.0],
+              ["6/1/2020", 176.0]
             ]
           },
           {
-            name: "USSR/Russia",
-            data: [
-              null,
-              null,
-              null,
-              null,
-              null,
-              null,
-              null,
-              null,
-              null,
-              null,
-              5,
-              25,
-              50,
-              120,
-              150,
-              200,
-              426,
-              660,
-              869,
-              1060,
-              1605,
-              2471,
-              3322,
-              4238,
-              5221,
-              6129,
-              7089,
-              8339,
-              9399,
-              10538,
-              11643,
-              13092,
-              14478,
-              15915,
-              17385,
-              19055,
-              21205,
-              23044,
-              25393,
-              27935,
-              30062,
-              32049,
-              33952,
-              35804,
-              37431,
-              39197,
-              45000,
-              43000,
-              41000,
-              39000,
-              37000,
-              35000,
-              33000,
-              31000,
-              29000,
-              27000,
-              25000,
-              24000,
-              23000,
-              22000,
-              21000,
-              20000,
-              19000,
-              18000,
-              18000,
-              17000,
-              16000
+            name: "Taxes",
+            points: [
+              ["1/1/2020", 86.9],
+              ["2/1/2020", 79.5],
+              ["3/1/2020", 95.4],
+              ["4/1/2020", 97.2],
+              ["5/1/2020", 123.0],
+              ["6/1/2020", 111.0]
+            ]
+          },
+          {
+            name: "Supplies",
+            points: [
+              ["1/1/2020", 129.9],
+              ["2/1/2020", 111.5],
+              ["3/1/2020", 66.4],
+              ["4/1/2020", 29.2],
+              ["5/1/2020", 88.0],
+              ["6/1/2020", 102.0]
+            ]
+          },
+          {
+            name: "Rent",
+            points: [
+              ["1/1/2020", 56.9],
+              ["2/1/2020", 56.5],
+              ["3/1/2020", 56.4],
+              ["4/1/2020", 56.2],
+              ["5/1/2020", 75.0],
+              ["6/1/2020", 56.0]
             ]
           }
         ]

@@ -1,218 +1,73 @@
 <template>
   <div>
-    <ActivityGuage :options="chartOptions" />
+    <ActivityGuage :options="chartOptions" ref="activityGuage" />
   </div>
 </template>
 
 <script>
-import { Chart } from "highcharts-vue";
-import Highcharts from "highcharts";
-import SoldiGuage from "highcharts/modules/solid-gauge";
-import More from "highcharts/highcharts-more";
-More(Highcharts);
-SoldiGuage(Highcharts);
+import ActivityGuage from "jscharting-vue";
 
 export default {
-  components: { ActivityGuage: Chart },
+  components: {
+    ActivityGuage
+  },
   data() {
     return {
+      INTERVAL_ID: null,
       chartOptions: {
-        chart: {
-          type: "solidgauge",
-          height: "110%",
-          events: {
-            render: function() {
-              // Move icon
-              if (!this.series[0].icon) {
-                this.series[0].icon = this.renderer
-                  .path(["M", -8, 0, "L", 8, 0, "M", 0, -8, "L", 8, 0, 0, 8])
-                  .attr({
-                    stroke: "#303030",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                    "stroke-width": 2,
-                    zIndex: 10
-                  })
-                  .add(this.series[2].group);
-              }
-              this.series[0].icon.translate(
-                this.chartWidth / 2 - 10,
-                this.plotHeight / 2 -
-                  this.series[0].points[0].shapeArgs.innerR -
-                  (this.series[0].points[0].shapeArgs.r -
-                    this.series[0].points[0].shapeArgs.innerR) /
-                    2
-              );
-
-              // Exercise icon
-              if (!this.series[1].icon) {
-                this.series[1].icon = this.renderer
-                  .path(["M", -8, 0, "L", 8, 0, "M", 0, -8, "L", 8, 0, 0, 8, "M", 8, -8, "L", 16, 0, 8, 8 ])
-                  .attr({
-                    stroke: "#ffffff",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                    "stroke-width": 2,
-                    zIndex: 10
-                  })
-                  .add(this.series[2].group);
-              }
-              this.series[1].icon.translate(
-                this.chartWidth / 2 - 10,
-                this.plotHeight / 2 -
-                  this.series[1].points[0].shapeArgs.innerR -
-                  (this.series[1].points[0].shapeArgs.r -
-                    this.series[1].points[0].shapeArgs.innerR) /
-                    2
-              );
-
-              // Stand icon
-              if (!this.series[2].icon) {
-                this.series[2].icon = this.renderer
-                  .path(["M", 0, 8, "L", 0, -8, "M", -8, 0, "L", 0, -8, 8, 0])
-                  .attr({
-                    stroke: "#303030",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                    "stroke-width": 2,
-                    zIndex: 10
-                  })
-                  .add(this.series[2].group);
-              }
-
-              this.series[2].icon.translate(
-                this.chartWidth / 2 - 10,
-                this.plotHeight / 2 -
-                  this.series[2].points[0].shapeArgs.innerR -
-                  (this.series[2].points[0].shapeArgs.r -
-                    this.series[2].points[0].shapeArgs.innerR) /
-                    2
-              );
-            }
-          }
-        },
-
-        title: {
-          text: "Activity",
-          style: {
-            fontSize: "24px"
-          }
-        },
-
-        tooltip: {
-          borderWidth: 0,
-          backgroundColor: "none",
-          shadow: false,
-          style: {
-            fontSize: "16px"
-          },
-          valueSuffix: "%",
-          pointFormat:
-            '{series.name}<br><span style="font-size:2em; color: {point.color}; font-weight: bold">{point.y}</span>',
-          positioner: function(labelWidth) {
-            return {
-              x: (this.chart.chartWidth - labelWidth) / 2,
-              y: this.chart.plotHeight / 2 + 15
-            };
-          }
-        },
-
-        pane: {
-          startAngle: 0,
-          endAngle: 360,
-          background: [
-            {
-              // Track for Move
-              outerRadius: "112%",
-              innerRadius: "88%",
-              backgroundColor: Highcharts.color(
-                Highcharts.getOptions().colors[0]
-              )
-                .setOpacity(0.3)
-                .get(),
-              borderWidth: 0
-            },
-            {
-              // Track for Exercise
-              outerRadius: "87%",
-              innerRadius: "63%",
-              backgroundColor: Highcharts.color(
-                Highcharts.getOptions().colors[1]
-              )
-                .setOpacity(0.3)
-                .get(),
-              borderWidth: 0
-            },
-            {
-              // Track for Stand
-              outerRadius: "62%",
-              innerRadius: "38%",
-              backgroundColor: Highcharts.color(
-                Highcharts.getOptions().colors[2]
-              )
-                .setOpacity(0.3)
-                .get(),
-              borderWidth: 0
-            }
-          ]
-        },
-
+        type: "gauge ",
+        legend: { position: "bottom" },
+        animation_duration: 400,
+        //Spacing between circular bars
+        xAxis_spacingPercentage: 0.1,
         yAxis: {
-          min: 0,
-          max: 100,
-          lineWidth: 0,
-          tickPositions: []
+          line_width: 0,
+          scale_range: [0, 100]
         },
 
-        plotOptions: {
-          solidgauge: {
-            dataLabels: {
-              enabled: false
-            },
-            linecap: "round",
-            stickyTracking: false,
-            rounded: true
-          }
+        defaultSeries: {
+          type: "column roundCaps",
+          angle: { sweep: 360, start: -90 },
+          shape_innerSize: "30%"
         },
-
+        defaultTooltip_visible: false,
         series: [
           {
-            name: "Move",
-            data: [
-              {
-                color: Highcharts.getOptions().colors[0],
-                radius: "112%",
-                innerRadius: "88%",
-                y: 80
+            palette: ["#E10715", "#3FDC00", "#3EBAE1"],
+            name: "Activities",
+            defaultPoint: {
+              marker: {
+                fill: "white",
+                //Outline makes the markers thicker without making them larger
+                outline: { width: 0, color: "white" },
+                visible: true,
+                size: 17
               }
-            ]
-          },
-          {
-            name: "Exercise",
-            data: [
+            },
+            points: [
               {
-                color: Highcharts.getOptions().colors[1],
-                radius: "87%",
-                innerRadius: "63%",
-                y: 65
-              }
-            ]
-          },
-          {
-            name: "Stand",
-            data: [
+                x: "Running",
+                id: "r",
+                y: 30,
+                marker_type: "material/maps/directions-run"
+              },
               {
-                color: Highcharts.getOptions().colors[2],
-                radius: "62%",
-                innerRadius: "38%",
-                y: 50
-              }
+                x: "Walking",
+                id: "w",
+                y: 25,
+                marker_type: "material/maps/directions-walk"
+              },
+              {
+                x: "Biking",
+                id: "s",
+                y: 20,
+                marker_type: "material/maps/directions-bike"
+              } //material/maps/hotel
             ]
           }
         ]
-      },
-      title: ""
+      }
     };
-  }
+  },
 };
 </script>

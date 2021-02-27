@@ -1,56 +1,39 @@
 <template>
   <div>
-    <PieChart
-    :options="chartOptions"
-  />
+    <PieChart :options="chartOptions" />
   </div>
 </template>
 
 <script>
-import { Chart } from 'highcharts-vue'
+import PieChart from "jscharting-vue";
+
 export default {
-  components: { PieChart: Chart },
-   data() {
-      return {
-        chartOptions: {
-          chart: {
-            type: "pie",
-            options3d: {
-              enabled: true,
-              alpha: 45
-            }
-          },
-          title: {
-            text: "Contents of Highsoft's weekly fruit delivery"
-          },
-          subtitle: {
-            text: "3D donut in Highcharts"
-          },
-          plotOptions: {
-            pie: {
-              innerSize: 100,
-              depth: 45
-            }
-          },
-          series: [
-            {
-              name: "Delivered amount",
-              data: [
-                ["Bananas", 8],
-                ["Kiwi", 3],
-                ["Mixed nuts", 1],
-                ["Oranges", 6],
-                ["Apples", 8],
-                ["Pears", 4],
-                ["Clementines", 4],
-                ["Reddish (bag)", 1],
-                ["Grapes (bunch)", 1]
-              ]
-            }
-          ]
+  components: { PieChart },
+  data() {
+    return {
+      chartOptions: {
+        legend: {
+          position: "inside left bottom",
+          template: "%value {%percentOfTotal:n1}% %icon %name"
         },
-      title: ''
-    }
+        title_position: "center",
+        defaultSeries_type: "pieDonut",
+        defaultPoint_label_text: "<b>%name</b>",
+        title_label_text: "Countries GDP",
+        yAxis: { label_text: "GDP", formatString: "n" },
+        series: [
+          {
+            name: "Countries",
+            points: [
+              { name: "United States", y: 5452500 },
+              { name: "Canada", y: 786052 },
+              { name: "United Kingdom", y: 477338 },
+              { name: "Mexico", y: 155313 }
+            ]
+          }
+        ]
+      }
+    };
   }
-}
+};
 </script>
