@@ -1,218 +1,214 @@
 <template>
-  <div>
-    <ActivityGuage :options="chartOptions" />
-  </div>
+  <div ref="chartdiv" id="chartdiv"></div>
 </template>
-
 <script>
-import { Chart } from "highcharts-vue";
-import Highcharts from "highcharts";
-import SoldiGuage from "highcharts/modules/solid-gauge";
-import More from "highcharts/highcharts-more";
-More(Highcharts);
-SoldiGuage(Highcharts);
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4charts from "@amcharts/amcharts4/charts";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+am4core.useTheme(am4themes_animated);
 
 export default {
-  components: { ActivityGuage: Chart },
   data() {
     return {
-      chartOptions: {
-        chart: {
-          type: "solidgauge",
-          height: "110%",
-          events: {
-            render: function() {
-              // Move icon
-              if (!this.series[0].icon) {
-                this.series[0].icon = this.renderer
-                  .path(["M", -8, 0, "L", 8, 0, "M", 0, -8, "L", 8, 0, 0, 8])
-                  .attr({
-                    stroke: "#303030",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                    "stroke-width": 2,
-                    zIndex: 10
-                  })
-                  .add(this.series[2].group);
-              }
-              this.series[0].icon.translate(
-                this.chartWidth / 2 - 10,
-                this.plotHeight / 2 -
-                  this.series[0].points[0].shapeArgs.innerR -
-                  (this.series[0].points[0].shapeArgs.r -
-                    this.series[0].points[0].shapeArgs.innerR) /
-                    2
-              );
-
-              // Exercise icon
-              if (!this.series[1].icon) {
-                this.series[1].icon = this.renderer
-                  .path(["M", -8, 0, "L", 8, 0, "M", 0, -8, "L", 8, 0, 0, 8, "M", 8, -8, "L", 16, 0, 8, 8 ])
-                  .attr({
-                    stroke: "#ffffff",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                    "stroke-width": 2,
-                    zIndex: 10
-                  })
-                  .add(this.series[2].group);
-              }
-              this.series[1].icon.translate(
-                this.chartWidth / 2 - 10,
-                this.plotHeight / 2 -
-                  this.series[1].points[0].shapeArgs.innerR -
-                  (this.series[1].points[0].shapeArgs.r -
-                    this.series[1].points[0].shapeArgs.innerR) /
-                    2
-              );
-
-              // Stand icon
-              if (!this.series[2].icon) {
-                this.series[2].icon = this.renderer
-                  .path(["M", 0, 8, "L", 0, -8, "M", -8, 0, "L", 0, -8, 8, 0])
-                  .attr({
-                    stroke: "#303030",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                    "stroke-width": 2,
-                    zIndex: 10
-                  })
-                  .add(this.series[2].group);
-              }
-
-              this.series[2].icon.translate(
-                this.chartWidth / 2 - 10,
-                this.plotHeight / 2 -
-                  this.series[2].points[0].shapeArgs.innerR -
-                  (this.series[2].points[0].shapeArgs.r -
-                    this.series[2].points[0].shapeArgs.innerR) /
-                    2
-              );
-            }
-          }
-        },
-
-        title: {
-          text: "Activity",
-          style: {
-            fontSize: "24px"
-          }
-        },
-
-        tooltip: {
-          borderWidth: 0,
-          backgroundColor: "none",
-          shadow: false,
-          style: {
-            fontSize: "16px"
-          },
-          valueSuffix: "%",
-          pointFormat:
-            '{series.name}<br><span style="font-size:2em; color: {point.color}; font-weight: bold">{point.y}</span>',
-          positioner: function(labelWidth) {
-            return {
-              x: (this.chart.chartWidth - labelWidth) / 2,
-              y: this.chart.plotHeight / 2 + 15
-            };
-          }
-        },
-
-        pane: {
-          startAngle: 0,
-          endAngle: 360,
-          background: [
-            {
-              // Track for Move
-              outerRadius: "112%",
-              innerRadius: "88%",
-              backgroundColor: Highcharts.color(
-                Highcharts.getOptions().colors[0]
-              )
-                .setOpacity(0.3)
-                .get(),
-              borderWidth: 0
-            },
-            {
-              // Track for Exercise
-              outerRadius: "87%",
-              innerRadius: "63%",
-              backgroundColor: Highcharts.color(
-                Highcharts.getOptions().colors[1]
-              )
-                .setOpacity(0.3)
-                .get(),
-              borderWidth: 0
-            },
-            {
-              // Track for Stand
-              outerRadius: "62%",
-              innerRadius: "38%",
-              backgroundColor: Highcharts.color(
-                Highcharts.getOptions().colors[2]
-              )
-                .setOpacity(0.3)
-                .get(),
-              borderWidth: 0
-            }
-          ]
-        },
-
-        yAxis: {
-          min: 0,
-          max: 100,
-          lineWidth: 0,
-          tickPositions: []
-        },
-
-        plotOptions: {
-          solidgauge: {
-            dataLabels: {
-              enabled: false
-            },
-            linecap: "round",
-            stickyTracking: false,
-            rounded: true
-          }
-        },
-
-        series: [
+      chartMin: -50,
+      chartMax: 100,
+      chartData: {
+        score: 52.7,
+        gradingData: [
           {
-            name: "Move",
-            data: [
-              {
-                color: Highcharts.getOptions().colors[0],
-                radius: "112%",
-                innerRadius: "88%",
-                y: 80
-              }
-            ]
+            title: "Unsustainable",
+            color: "#ee1f25",
+            lowScore: -100,
+            highScore: -20
           },
           {
-            name: "Exercise",
-            data: [
-              {
-                color: Highcharts.getOptions().colors[1],
-                radius: "87%",
-                innerRadius: "63%",
-                y: 65
-              }
-            ]
+            title: "Volatile",
+            color: "#f04922",
+            lowScore: -20,
+            highScore: 0
           },
           {
-            name: "Stand",
-            data: [
-              {
-                color: Highcharts.getOptions().colors[2],
-                radius: "62%",
-                innerRadius: "38%",
-                y: 50
-              }
-            ]
+            title: "Foundational",
+            color: "#fdae19",
+            lowScore: 0,
+            highScore: 20
+          },
+          {
+            title: "Developing",
+            color: "#f3eb0c",
+            lowScore: 20,
+            highScore: 40
+          },
+          {
+            title: "Maturing",
+            color: "#b0d136",
+            lowScore: 40,
+            highScore: 60
+          },
+          {
+            title: "Sustainable",
+            color: "#54b947",
+            lowScore: 60,
+            highScore: 80
+          },
+          {
+            title: "High Performing",
+            color: "#0f9747",
+            lowScore: 80,
+            highScore: 100
           }
         ]
-      },
-      title: ""
+      }
     };
+  },
+  mounted() {
+    let chart = am4core.create(this.$refs.chartdiv, am4charts.GaugeChart);
+    chart.fontSize = 11;
+    chart.innerRadius = am4core.percent(80);
+    chart.resizable = true;
+
+    /**
+     * Normal axis
+     */
+
+    var axis = chart.xAxes.push(new am4charts.ValueAxis());
+    axis.min = this.chartMin;
+    axis.max = this.chartMax;
+    axis.strictMinMax = true;
+    axis.renderer.radius = am4core.percent(80);
+    axis.renderer.inside = true;
+    axis.renderer.line.strokeOpacity = 0.1;
+    axis.renderer.ticks.template.disabled = false;
+    axis.renderer.ticks.template.strokeOpacity = 1;
+    axis.renderer.ticks.template.strokeWidth = 0.5;
+    axis.renderer.ticks.template.length = 5;
+    axis.renderer.grid.template.disabled = true;
+    axis.renderer.labels.template.radius = am4core.percent(15);
+    axis.renderer.labels.template.fontSize = "0.9em";
+
+    /**
+     * Axis for ranges
+     */
+
+    var axis2 = chart.xAxes.push(new am4charts.ValueAxis());
+    axis2.min = this.chartMin;
+    axis2.max = this.chartMax;
+    axis2.strictMinMax = true;
+    axis2.renderer.labels.template.disabled = true;
+    axis2.renderer.ticks.template.disabled = true;
+    axis2.renderer.grid.template.disabled = false;
+    axis2.renderer.grid.template.opacity = 0.5;
+    axis2.renderer.labels.template.bent = true;
+    axis2.renderer.labels.template.fill = am4core.color("#000");
+    axis2.renderer.labels.template.fontWeight = "bold";
+    axis2.renderer.labels.template.fillOpacity = 0.3;
+
+    /**Ranges*/
+    for (let grading of this.chartData.gradingData) {
+      var range = axis2.axisRanges.create();
+      range.axisFill.fill = am4core.color(grading.color);
+      range.axisFill.fillOpacity = 0.8;
+      range.axisFill.zIndex = -1;
+      range.value =
+        grading.lowScore > this.chartMin ? grading.lowScore : this.chartMin;
+      range.endValue =
+        grading.highScore < this.chartMax ? grading.highScore : this.chartMax;
+      range.grid.strokeOpacity = 0;
+      range.stroke = am4core.color(grading.color).lighten(-0.1);
+      range.label.inside = true;
+      range.label.text = grading.title.toUpperCase();
+      range.label.inside = true;
+      range.label.location = 0.5;
+      range.label.inside = true;
+      range.label.radius = am4core.percent(10);
+      range.label.paddingBottom = -5; // ~half font size
+      range.label.fontSize = "0.9em";
+    }
+
+    var matchingGrade = this.lookUpGrade(
+      this.chartData.score,
+      this.chartData.gradingData
+    );
+
+    /**
+     * Label 1
+     */
+
+    var label = chart.radarContainer.createChild(am4core.Label);
+    label.isMeasured = false;
+    label.fontSize = "6em";
+    label.x = am4core.percent(50);
+    label.paddingBottom = 15;
+    label.horizontalCenter = "middle";
+    label.verticalCenter = "bottom";
+    //label.dataItem = data;
+    label.text = this.chartData.score.toFixed(1);
+    //label.text = "{score}";
+    label.fill = am4core.color(matchingGrade.color);
+
+    /**
+     * Label 2
+     */
+
+    var label2 = chart.radarContainer.createChild(am4core.Label);
+    label2.isMeasured = false;
+    label2.fontSize = "2em";
+    label2.horizontalCenter = "middle";
+    label2.verticalCenter = "bottom";
+    label2.text = matchingGrade.title.toUpperCase();
+    label2.fill = am4core.color(matchingGrade.color);
+
+    /**
+     * Hand
+     */
+
+    var hand = chart.hands.push(new am4charts.ClockHand());
+    hand.axis = axis2;
+    hand.innerRadius = am4core.percent(55);
+    hand.startWidth = 8;
+    hand.pin.disabled = true;
+    hand.value = this.chartData.score;
+    hand.fill = am4core.color("#444");
+    hand.stroke = am4core.color("#000");
+    let _this = this;
+    hand.events.on("positionchanged", function() {
+      label.text = axis2.positionToValue(hand.currentPosition).toFixed(1);
+      var value2 = axis.positionToValue(hand.currentPosition);
+      var matchingGrade = _this.lookUpGrade(
+        axis.positionToValue(hand.currentPosition),
+        _this.chartData.gradingData
+      );
+      label2.text = matchingGrade.title.toUpperCase();
+      label2.fill = am4core.color(matchingGrade.color);
+      label2.stroke = am4core.color(matchingGrade.color);
+      label.fill = am4core.color(matchingGrade.color);
+    });
+
+    setInterval(function() {
+      var value =
+        this.chartMin + Math.random() * (this.chartMax - this.chartMin);
+      hand.showValue(value, 1000, am4core.ease.cubicOut);
+    }, 2000);
+  },
+  methods: {
+    lookUpGrade(lookupScore, grades) {
+      // Only change code below this line
+      for (var i = 0; i < grades.length; i++) {
+        if (
+          grades[i].lowScore < lookupScore &&
+          grades[i].highScore >= lookupScore
+        ) {
+          return grades[i];
+        }
+      }
+      return null;
+    }
   }
 };
 </script>
+<style>
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}
+</style>
