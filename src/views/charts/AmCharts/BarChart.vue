@@ -1,85 +1,92 @@
 <template>
-  <div>
-    <BarChart :options="chartOptions" />
-  </div>
+  <div ref="chartdiv" id="chartdiv"></div>
 </template>
-
 <script>
-import { Chart } from "highcharts-vue";
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4charts from "@amcharts/amcharts4/charts";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+am4core.useTheme(am4themes_animated);
+
 export default {
-  components: {
-    BarChart: Chart
-  },
   data() {
     return {
-      chartOptions: {
-        chart: {
-          type: "bar"
+      chartData: [
+        {
+          year: 2005,
+          income: 23.5,
+          expenses: 18.1
         },
-        title: {
-          text: "Historic World Population by Region"
+        {
+          year: 2006,
+          income: 26.2,
+          expenses: 22.8
         },
-        subtitle: {
-          text:
-            'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+        {
+          year: 2007,
+          income: 30.1,
+          expenses: 23.9
         },
-        xAxis: {
-          categories: ["Africa", "America", "Asia", "Europe", "Oceania"],
-          title: {
-            text: null
-          }
+        {
+          year: 2008,
+          income: 29.5,
+          expenses: 25.1
         },
-        yAxis: {
-          min: 0,
-          title: {
-            text: "Population (millions)",
-            align: "high"
-          },
-          labels: {
-            overflow: "justify"
-          }
-        },
-        tooltip: {
-          valueSuffix: " millions"
-        },
-        plotOptions: {
-          bar: {
-            dataLabels: {
-              enabled: true
-            }
-          }
-        },
-        legend: {
-          layout: "vertical",
-          align: "right",
-          verticalAlign: "top",
-          x: -40,
-          y: 80,
-          floating: true,
-          borderWidth: 1,
-          backgroundColor:
-            (Chart.theme && Chart.theme.legendBackgroundColor) || "#FFFFFF",
-          shadow: true
-        },
-        credits: {
-          enabled: false
-        },
-        series: [
-          {
-            name: "Year 1800",
-            data: [107, 31, 635, 203, 2]
-          },
-          {
-            name: "Year 1900",
-            data: [133, 156, 947, 408, 6]
-          },
-          {
-            name: "Year 2012",
-            data: [1052, 954, 4250, 740, 38]
-          }
-        ]
-      }
+        {
+          year: 2009,
+          income: 24.6,
+          expenses: 25
+        }
+      ]
     };
+  },
+  mounted() {
+    let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
+
+    chart.data = this.chartData;
+    var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "year";
+    categoryAxis.numberFormatter.numberFormat = "#";
+    categoryAxis.renderer.inversed = true;
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.renderer.cellStartLocation = 0.1;
+    categoryAxis.renderer.cellEndLocation = 0.9;
+
+    var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+    valueAxis.renderer.opposite = true;
+    this.createSeries("income", "Income", chart);
+    this.createSeries("expenses", "Expenses", chart);
+  },
+  methods: {
+    createSeries(field, name, chart) {
+      var series = chart.series.push(new am4charts.ColumnSeries());
+      series.dataFields.valueX = field;
+      series.dataFields.categoryY = "year";
+      series.name = name;
+      series.columns.template.tooltipText = "{name}: [bold]{valueX}[/]";
+      series.columns.template.height = am4core.percent(100);
+      series.sequencedInterpolation = true;
+
+      var valueLabel = series.bullets.push(new am4charts.LabelBullet());
+      valueLabel.label.text = "{valueX}";
+      valueLabel.label.horizontalCenter = "left";
+      valueLabel.label.dx = 10;
+      valueLabel.label.hideOversized = false;
+      valueLabel.label.truncate = false;
+
+      var categoryLabel = series.bullets.push(new am4charts.LabelBullet());
+      categoryLabel.label.text = "{name}";
+      categoryLabel.label.horizontalCenter = "right";
+      categoryLabel.label.dx = -10;
+      categoryLabel.label.fill = am4core.color("#fff");
+      categoryLabel.label.hideOversized = false;
+      categoryLabel.label.truncate = false;
+    }
   }
 };
 </script>
+<style>
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}
+</style>
