@@ -23,6 +23,10 @@ export default {
     boxPadding: {
       type: Number,
       default: 0
+    },
+    markerColor: {
+      type: String,
+      default: 'white'
     }
   },
   data() {
@@ -30,11 +34,11 @@ export default {
       options: {
         type: this.type,
         defaultPoint: { 
-          color: "white",
-          fill: 'white',
+          color: this.markerColor,
+          fill: this.markerColor,
           focusGlow: {
             color: 'white',
-            width: this.marker ? 1 : 0
+            width: this.marker ? 2 : 0
           }
         },
         box_padding_left: this.boxPadding,
@@ -59,11 +63,12 @@ export default {
           visible: false,
         },
         legend_visible: false,
-        defaultPoint_marker: { fill: 'white', outline_width: 0.5, type: 'circle', size: 8 },
+        defaultPoint_marker: { fill: 'none', outline_width: 1, type: 'circle', size: 9 },
         series: [
           {
+            line: { color: 'white' },
             defaultPoint_marker_visible: this.marker,
-            line_width: 1,
+            line_width: 1.2,
             points: [
               { x: 'January', y: 40 },
               { x: 'February', y: 30 },
