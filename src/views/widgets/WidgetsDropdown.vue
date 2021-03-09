@@ -72,9 +72,9 @@
         <template #footer>
           <CChartLineSimple
             color="#f9b115"
-            type="area"
+            type="area spline"
             :marker="false"
-            markerColor="#f8b523d9"
+            markerColor="#f2cb75"
             :boxPadding="-21"
           />
         </template>

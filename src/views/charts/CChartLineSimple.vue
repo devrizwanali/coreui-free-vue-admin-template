@@ -43,6 +43,7 @@ export default {
         },
         box_padding_left: this.boxPadding,
         box_padding_right: this.boxPadding,
+        box_padding_bottom: this.type == "area spline" ? this.boxPadding : 0,
         box_fill: 'none',
         defaultTooltip: {
           combined: true,
@@ -63,9 +64,10 @@ export default {
           visible: false,
         },
         legend_visible: false,
-        defaultPoint_marker: { fill: 'none', outline_width: 1, type: 'circle', size: 9 },
+        defaultPoint_marker: { fill: this.color, outline_width: 1, type: 'circle', size: 9 },
         series: [
           {
+            color: this.markerColor,
             line: { color: 'white' },
             defaultPoint_marker_visible: this.marker,
             line_width: 1.2,
